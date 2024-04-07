@@ -20,8 +20,10 @@ type application struct {
 	errorLog      *log.Logger
 	infoLog       *log.Logger
 	session       *sessions.Session
-	snippets      *mysql.SnippetModel
 	templateCache map[string]*template.Template
+
+	snippets *mysql.SnippetModel
+	users    *mysql.UserModel
 }
 
 func main() {
@@ -51,8 +53,10 @@ func main() {
 		errorLog:      errorLog,
 		infoLog:       infoLog,
 		session:       session,
-		snippets:      &mysql.SnippetModel{DB: db},
 		templateCache: templateCache,
+
+		snippets: &mysql.SnippetModel{DB: db},
+		users:    &mysql.UserModel{DB: db},
 	}
 
 	tlsConfig := &tls.Config{
