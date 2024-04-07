@@ -10,6 +10,7 @@ import (
 	"os"
 	"time"
 
+	"snippetbox/pkg/models"
 	"snippetbox/pkg/models/mysql"
 
 	_ "github.com/go-sql-driver/mysql"
@@ -26,8 +27,16 @@ type application struct {
 	session       *sessions.Session
 	templateCache map[string]*template.Template
 
-	snippets *mysql.SnippetModel
-	users    *mysql.UserModel
+	snippets interface {
+		Insert(string, string, string) (int, error)
+		Get(int) (*models.Snippet, error)
+		Latest() ([]*models.Snippet, error)
+	}
+	users interface {
+		Insert(string, string, string) error
+		Authenticate(string, string) (int, error)
+		Get(int) (*models.User, error)
+	}
 }
 
 func main() {
